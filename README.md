@@ -14,11 +14,7 @@ Let's start from the start, click on xcode app, currently the latest one availab
 </p>
 
 Select game then fill in the game's name, we will creatively name it "codetechniqdemo", make sure the language is set at swift and don't worry about the other fields.
-Before we change anything, run the app on the simulator by pressing the "play" button on top. 
-
-<img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/screen5.png" width="30%" height="30%">
-
-This is what we get, when you click on the screen it generates colorful spinning rectangles that quickly disappear. We won't use most of this because our game is different, so we have to reove some code, and replace it with our own. Let's get started.
+Before we change anything, run the app on the simulator by pressing the "play" button on top. (image 4) Is what we get, when you click on the screen it generates colorful spinning rectangles that quickly disappear. We won't use most of this because our game is different, so we have to reove some code, and replace it with our own. Let's get started.
 
 First things first, let's make sure we download the art and sound for our game and have it ready in the Xcode project. Download the resources from [here](https://github.com/PhaelIshall/iOS-game-Tutorial/tree/master/game_art) (Go [here](https://github.com/PhaelIshall/iOS-game-Tutorial) and click on "download" then open the file "game_art".
 Drag and drop the contents of the folder into your xcode project just so: 
@@ -27,10 +23,18 @@ Make sure to select "copy items if necessary"
 ![Screenshot 7](https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/screen7.png)
 Now that's done, let's remove the current game in the project. Delete the file **GameScene.sks**, make sure to delete the right file. 
 Next, go to gameScene.swift and just delete everything inside the class. This is what should remain: 
-![Screenshot 8](https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/screen8.png)
+
+```
+import SpriteKit
+import GameplayKit
+
+class GameScene: SKScene {
+    
+}
+```
 
 Now, let's get started! Open your **GameViewController.swift** file, this is what you should see: 
-<img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/screen9.png" width="50%" height="50%">
+<img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/screen9.png" width="70%" height="70%">
 This is a normal UIViewController (think of it like the code behind what you see on any given screen) with an SKView for a root view. This means that it contains a SpriteKit scene.
 Let's start by adding our player to the screen. All our character will start as static characters without animation, we will add this as a bonus later on. 
 Go to your **GameScene.swift** file and add the following:
