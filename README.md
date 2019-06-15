@@ -7,4 +7,4 @@ So this is the story our game will have. We have an adventurer, who comes in con
 ![Screenshot 1](https://phaelishall.github.com/images/screen1.png)
 
 Let's start from the start, click on xcode app, currently the latest one available on the app score is xcode 10.2.1 so make sure that is the one you have. This should show up 
-![Screenshot 2](https://phaelishall.github.com/images/screen2.png) |![Screenshot 3](https://phaelishall.github.com/images/screen3.png)|![Screenshot 4](https://phaelishall.github.com/images/screen4.png)
+![Screenshot 2](https://github.com/PhaelIshall/iOS-game-Tutorial/tree/master/images/screen2.png) |![Screenshot 3](https://github.com/PhaelIshall/iOS-game-Tutorial/tree/master/images/screen3.png)|![Screenshot 4](https://github.com/PhaelIshall/iOS-game-Tutorial/tree/master/images/screen4.png)
