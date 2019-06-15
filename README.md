@@ -35,6 +35,7 @@ class GameScene: SKScene {
 
 Now, let's get started! Open your **GameViewController.swift** file, this is what you should see: 
 <img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/screen9.png" width="70%" height="70%">
+
 This is a normal UIViewController (think of it like the code behind what you see on any given screen) with an SKView for a root view. This means that it contains a SpriteKit scene.
 Let's start by adding our player to the screen. All our character will start as static characters without animation, we will add this as a bonus later on. 
 Go to your **GameScene.swift** file and add the following:
