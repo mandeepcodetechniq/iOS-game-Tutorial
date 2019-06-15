@@ -4,10 +4,9 @@ This will be a beginner's tutorial for making games on the iphone. Not all conce
 
 So this is the story our game will have. We have an adventurer, who comes in contact with some alien insects and has to shoot them down or else she will die! This is what the main parts look like: 
 <img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/screen1.png">
-Let's start from the start, click on xcode app, currently the latest one available on the app score is xcode 10.2.1 so make sure that is the one you have. This should show up 
-<img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/screen2.png" width="50%" height="50%">
-Click on create a new Xcode project
-![Screenshot 3](https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/screen3.png)
+Let's start from the start, click on xcode app, currently the latest one available on the app score is xcode 10.2.1 so make sure that is the one you have. This should show up, click on create a new Xcode project
+---------------------------------------------------------------------
+<img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/screen2.png" width="50%" height="50%">|!<img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/screen3.png" width="50%" height="50%">
 Select game then fill in the game's name, we will creatively name it "codetechniqdemo", make sure the language is set at swift and don't worry about the other fields.
 ![Screenshot 4](https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/screen4.png)
 Before we change anything, run the app on the simulator by pressing the "play" button on top. 
