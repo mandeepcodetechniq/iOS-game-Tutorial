@@ -35,7 +35,7 @@ Open the file **Assets.xcassets** Open. Drag the file "Hero.png" into Assets lik
 Now that's done, let's remove the current game in the project. Open the file **GameScene.sks**, select the sprite that says "Hello World" and delete it.
 <img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/screen10.png">
 
-## Next Step: Coding! 
+## Next Step: Coding!  
 Next, go to gameScene.swift and just delete everything inside the class. This is what should remain: 
 
 ```
@@ -47,6 +47,8 @@ class GameScene: SKScene {
 }
 ```
 
+
+### Add the hero
 Now, let's get started! Open your **GameViewController.swift** file, this is what you should see: 
 <img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/screen9.png">
 
@@ -65,4 +67,133 @@ override func didMove(to view: SKView) {
 Now run the app, you should see this
 <img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/screen12.png">
 
+### Add the monsters
 
+Now, we want to add some enormous alien Bugs that our hero has to kill to defend herself. We want them to come from one end of the screen towards our hero. 
+
+First, let's ove the hero to the left side of the screen, so she can only be attacked from one side. To do this, replace this line in **GameScene.swift**
+```
+hero.position = CGPoint(x: frame.midX, y: frame.midY) //position in the middle of the screen
+```
+*with* 
+```
+hero.position = CGPoint(x: frame.minX + hero.size.width, y: frame.midY) //position in the middle of the screen
+```
+Now, those monsters. It won't be enough to just add them to the screen like we did for the hero, we also need to make them move from one side of the screen to the hero, and that movements in Swift language means adding an action.
+Let's create a function that generates these bugs: 
+```
+func addBug(){
+    let bug = SKSpriteNode(imageNamed: "bug") // create a bug sprite 
+    let startingY = frame.midY
+    bug.position = CGPoint(x: size.width + bug.size.width/2, y:  startingY)
+    addChild(bug)
+}
+```
+This should look familiar, since it is exactly what we did for the player. For now, all the monsters will start from the same point. While the x is set to slightly outside of the screen (*size.width + bug.size.width/2*) and y is the middle of the screen. This is still missing the movement. Add this bellow the previous code: 
+```
+let duration = random(min: CGFloat(2.0), max: CGFloat(4.0))
+let moveAction = SKAction.move(to: CGPoint(x: -bug.size.width/2, y:  startingY), duration: TimeInterval(duration))
+let finishAction = SKAction.removeFromParent()
+bug.run(SKAction.sequence([moveAction, finishAction]))
+ ```
+So what are we doing here? To create the action, we're setting the duration to 2 seconds and the source position this sprite spawns from. After the action is comeplete, we remove it from the scene. Then, we run the action sequence, move, then disappear, this is so we can remove it from the scene when it is no longer visible. If we don't do this, we could end up having dozens of monsters consuming the memory of your iPhone and you can't even see them. This is what the full code looks like: 
+```
+func addBug() {
+    let bug = SKSpriteNode(imageNamed: "bug")
+    let startingY = random(min: -monster.size.height, max: size.height - monster.size.height)
+    bug.position = CGPoint(x: size.width + bug.size.width/2, y:  startingY)
+    bug.setScale(3)
+    addChild(bug)
+    let duration =  random(min: CGFloat(2.0), max: CGFloat(4.0))
+    let moveAction = SKAction.move(to: CGPoint(x: frame.minX, y: frame.midY), duration: TimeInterval(duration))
+    let finishAction = SKAction.removeFromParent()
+    bug.run(SKAction.sequence([moveAction, finishAction]))
+}
+```
+This is not enough, we need to call the function so that we can see the bugs on the screen. Since we want to generate several instances of bugs, we will add this action at the end of **didMove(to:)**. It repeats the call to the previous function, then it waits for 1 seconds, then repeats the same sequence.
+```
+let actionSequence = SKAction.sequence([SKAction.run(addBug),SKAction.wait(forDuration: 1.0)])
+run(SKAction.repeatForever(actionSequence))
+```
+Now, build and run the project. What do you see? 
+Well, this looks very underwhelming. This is because we did not randomize the the positions the bugs come from. It makes a big difference! This is the code that implements **random()** functions: 
+```
+ func random(min: CGFloat, max: CGFloat) -> CGFloat {
+        return CGFloat(Float.random(in: Float(min) ..< Float(max)))
+ }
+    
+func addBug() {
+    let bug = SKSpriteNode(imageNamed: "bug")
+    let startingY = random(min: -size.height/2 - bug.size.height, max: size.height/2 + bug.size.height)
+    bug.position = CGPoint(x: size.width + bug.size.width/2, y: startingY)
+    bug.setScale(3)
+    addChild(bug)
+    let duration = random(min: CGFloat(2.0), max: CGFloat(4.0))
+    let moveAction = SKAction.move(to: CGPoint(x: frame.minX, y: frame.midY), duration: TimeInterval(duration))
+    let finishAction = SKAction.removeFromParent()
+    bug.run(SKAction.sequence([moveAction, finishAction]))
+}
+```
+### Shooting thr bugs
+
+There are many ways we can implement shooting the bugs. The way I chose to to click on the bug to send an arrow from the hero towards it. 
+
+We need to override a predefined function called **touchesEnded**, see below 
+```
+override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?){
+   //Add code here 
+}
+```
+Okay, now we need to add some code to the function above 
+First, we need to check if the screen has been touched, and if that is the case, we need to detect the location of the touch
+```
+override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?){
+   guard let touch = touches.first else {
+       return
+   }
+   let touchLocation = touch.location(in: self)
+}
+```
+
+Next, we need to set up the original location of the projectile, you're probably used to this by now: create a sprite and set the location.
+```
+  let projectile = SKSpriteNode(imageNamed: "projectile")
+  projectile.position = hero.position
+```
+We need to check if the touch on the screen is valid. For instance, we don't want to our hero shoot behind herself. To do this, we need to calculate the offset of the location to the projectile.
+Ideally, we would like it to be as simple as this:
+```
+let offset = touchLocation - projectile.position
+if offset.x < 0 { return }
+```
+However, there is no predefined operation '-' for CGPoint, we resolve this by using our helper file that implements the below function
+```
+func -(left: CGPoint, right: CGPoint) -> CGPoint {
+  return CGPoint(x: left.x - right.x, y: left.y - right.y)
+}
+```
+But let's not forget, we don't only want to show the projectile, we want to have an action that moves it across the screen towards the target. That means, we need to determine the direction of where to shoot. I hope you remember your highschool math, because this is what we will do
+1. Get the vector between the hero and the touch location
+2. Normalize the vector to have a unit vector that defines the desired direction
+3. Multiply that unit vector by a large number to get a far away point that goes beyond the screen
+Luckily we have our helper file to assist us in this endeavor, so we will just call the function that calculates the point for us. Make sure you understand the math behind it though!
+The steps described above are implemented under **findProjectileDestination**, you can see the details in the helper file.
+```
+override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+    guard let touch = touches.first else {
+        return
+    }
+    let touchLocation = touch.location(in: self)
+    let projectile = SKSpriteNode(imageNamed: "laser")
+    projectile.setScale(3)
+    projectile.position = hero.position
+    if let destinationPoint = CGPoint.findProjectileDestination(touchPoint: touchLocation, heroLocation: projectile.position){
+        addChild(projectile)
+        let actionMove = SKAction.move(to: destinationPoint, duration: 2.0)
+        let actionMoveDone = SKAction.removeFromParent()
+        projectile.run(SKAction.sequence([actionMove, actionMoveDone]))
+    }else{
+        return
+    }
+}
+```
