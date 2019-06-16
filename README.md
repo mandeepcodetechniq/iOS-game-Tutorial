@@ -134,7 +134,7 @@ func addBug() {
     bug.run(SKAction.sequence([moveAction, finishAction]))
 }
 ```
-### Shooting thr bugs
+### Shooting the bugs
 
 There are many ways we can implement shooting the bugs. The way I chose to to click on the bug to send an arrow from the hero towards it. 
 
@@ -197,3 +197,72 @@ override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
     }
 }
 ```
+### Physics, finally! 
+SpriteKit comes with a built in Physics Engine, this means we can detect collision. Why do we want that? When a bug collides with the player, it's game over. When the laser ball collides with the bug, the bug dies. We want to implement that. 
+
+Okay, here we are setting Physics categories. What are those? 
+<img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/expl.png">
+
+1. Each scene has a **physics world** behind it that controls certain aspects of the game, like gravity. This physics world is a simulation space for running physics calculations, it can tell us if two objects collide, how an object should be affected by gravity etc.
+
+2,3. Each sprite will have a **physics body** that constitutes the boundaries of where we will start counting collisions. You can see in the photo above, we assign a *ball* physics body to the laser ball and a *rectangle* to the bug. As you can tell, it doesn't have to be very accurate, just needs to get the job done, so an approximation is good enough.
+
+4,5. Like each type of  sprite has a physics body, each type of sprite also has a category. Let's name two categories, **bug** category and **laserBall** category. Now when two physics bodies collide (laser ball hits a bug), we can tell their categories and deal with them accordingly (remove both from screen for instance).
+    - First, let's add this stuct to the top of **GameScene.swift**
+      This is just the way to define categories in SpriteKit, using 32-bit integer acting as a bitmask. 
+    ```
+    struct PhysicsCategory {
+      static let none      : UInt32 = 0
+      static let all       : UInt32 = UInt32.max
+      static let bug       : UInt32 = 0b1       // 1 Binary for 1 
+      static let projectile: UInt32 = 0b10      // 10 Binary for 2
+    }
+    ```
+
+6. Now that we know the basics, this is how we deal with collisions. We have a physics world, we set a **contact delegate** on it that will be notified when two bodies collide, like explained above, we'll get their categories and then make them disppear.
+    - Next, we declare our **contact delegate**. We do this by adding the following code at the end of **GameScene.swift**. To understand delegates better, you should read up about them in the apple docs as they are essential for game and app development in swift. 
+
+    ```
+    extension GameScene: SKPhysicsContactDelegate {
+        //We will add code here 
+    }
+    ```
+
+### Coding the physics behind it all
+
+go to **didMove(to:)** function and add the following code:
+
+```
+    physicsWorld.gravity =.zero //No gravity in our physics world
+    physicsWorld.contactDelegate = self //the game scene is set as the delegate
+```
+
+inside **addMonster()**, add these lines after creating the monster sprite:
+
+```
+bug.physicsBody = SKPhysicsBody(rectangleOf: bug.size) // create physics body, a rectangle like the picture shows
+bug.physicsBody?.isDynamic = true // *dynamic* sprite means move actions will control the movement of the bug (declared in touchesEnded(..) and not by the physics engine. If we set this as false, our code won't detect teh collisions, report it and make the sprites disappear anymore
+bug.physicsBody?.categoryBitMask = PhysicsCategory.bug // set category
+bug.physicsBody?.contactTestBitMask = PhysicsCategory.projectile // collision with which category should trigger a response (by notifying the contact delegate)
+bug.physicsBody?.collisionBitMask = PhysicsCategory.none // which category of object should the bug category have teh physics engine handle contact with, like bouncing off. We don't want the balls bouncing off the bugs so we set it to none.
+```
+
+Now the same code is added after setting the laserBall position,
+```
+laserBall.physicsBody = SKPhysicsBody(circleOfRadius: projectile.size.width/2)
+laserBall.physicsBody?.isDynamic = true
+laserBall.physicsBody?.categoryBitMask = PhysicsCategory.projectile
+laserBall.physicsBody?.contactTestBitMask = PhysicsCategory.monster
+laserBall.physicsBody?.collisionBitMask = PhysicsCategory.none
+laserBall.physicsBody?.usesPreciseCollisionDetection = true //This is important to set for fast moving bodies like projectiles, because otherwise there is a chance that two fast moving bodies can pass through each other without a collision being detected.
+```
+
+We will aslo add this function to the end of **GameScene.swift** before the end of the class. 
+```
+func projectileDidCollideWithMonster(projectile: SKSpriteNode, monster: SKSpriteNode) {
+  print("Hit")
+  projectile.removeFromParent()
+  monster.removeFromParent()
+}
+```
+
