@@ -4,6 +4,8 @@ This will be a beginner's tutorial for making games on the iphone. Not all conce
 
 So this is the story our game will have. We have an adventurer, who comes in contact with some alien insects and has to shoot them down or else she will die! This is what the main parts look like: 
 <img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/screen1.png">
+
+## First steps: Setting up 
 Let's start from the start, click on xcode app, currently the latest one available on the app score is xcode 10.2.1 so make sure that is the one you have. This should show up, click on create a new Xcode project
 
 <p float="center">
@@ -21,9 +23,13 @@ As you can see in the first screenshot, we would like to have the app be only on
  <img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/screen0.png">
  
 First things first, let's make sure we download the art and sound for our game and have it ready in the Xcode project. Download the resources from [here](https://github.com/PhaelIshall/iOS-game-Tutorial/tree/master/game_art) (Go [here](https://github.com/PhaelIshall/iOS-game-Tutorial) and click on "download" then open the file "game_art".
-Drag and drop the contents of the folder into your xcode project just so: 
+Drag and drop the contents of the three folders in the screenshot into your xcode project just so: 
 ![Screenshot 6](https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/screen6.png)
 Make sure to select "copy items if necessary"
+Open the file **Assets.xcassets** Open. Drag the file "Hero.png" into Assets like so: 
+
+ <img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/screen11.png">
+
 ![Screenshot 7](https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/screen7.png)
 Now that's done, let's remove the current game in the project. Open the file **GameScene.sks**, select the sprite that says "Hello World" and delete it.
 <img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/screen10.png">
