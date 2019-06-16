@@ -52,11 +52,12 @@ This is a normal UIViewController (think of it like the code behind what you see
 Let's start by adding our player to the screen. All our character will start as static characters without animation, we will add this as a bonus later on. 
 Go to your **GameScene.swift** file and add the following:
 ```
-let player = SKSpriteNode(imageNamed: "hero")
+let hero = SKSpriteNode(imageNamed: "hero")
 override func didMove(to view: SKView) {
-  backgroundColor = SKColor.white
-  player.position = CGPoint(x: frame.midX, y: size.height * frame.midX)
-  addChild(player)
+    backgroundColor = SKColor.white
+    hero.position = CGPoint(x: frame.midX, y: frame.midY)
+    hero.setScale(1.25)
+    addChild(hero)
 }
 ```
 
