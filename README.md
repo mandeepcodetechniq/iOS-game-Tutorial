@@ -18,7 +18,7 @@ Before we change anything, run the app on the simulator by pressing the "play" b
 
 As you can see in the first screenshot, we would like to have the app be only on landscape mode. So let's make sure it can't be used in portait mode by unchecking this box: 
 
- <img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/screen0.png" width="50%" height="50%">
+ <img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/screen0.png">
  
 First things first, let's make sure we download the art and sound for our game and have it ready in the Xcode project. Download the resources from [here](https://github.com/PhaelIshall/iOS-game-Tutorial/tree/master/game_art) (Go [here](https://github.com/PhaelIshall/iOS-game-Tutorial) and click on "download" then open the file "game_art".
 Drag and drop the contents of the folder into your xcode project just so: 
