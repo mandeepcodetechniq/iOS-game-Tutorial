@@ -54,13 +54,15 @@ This is a normal UIViewController (think of it like the code behind what you see
 Let's start by adding our player to the screen. All our character will start as static characters without animation, we will add this as a bonus later on. 
 Go to your **GameScene.swift** file and add the following:
 ```
-let hero = SKSpriteNode(imageNamed: "hero")
+let hero = SKSpriteNode(imageNamed: "hero") //Create Sprite for hero 
 override func didMove(to view: SKView) {
     backgroundColor = SKColor.white
-    hero.position = CGPoint(x: frame.midX, y: frame.midY)
-    hero.setScale(1.25)
-    addChild(hero)
+    hero.position = CGPoint(x: frame.midX, y: frame.midY) //position in the middle of the screen
+    hero.setScale(1.25) //Enlarge by 1.25, you can remove this or change the value depending on the size you like
+    addChild(hero)  //to make the sprite appear on the screen, add as a child of the screen 
 }
 ```
+Now run the app, you should see this
+<img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/screen12.png">
 
 
