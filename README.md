@@ -35,6 +35,7 @@ Open the file **Assets.xcassets** Open. Drag the file "Hero.png" into Assets lik
 Now that's done, let's remove the current game in the project. Open the file **GameScene.sks**, select the sprite that says "Hello World" and delete it.
 <img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/screen10.png">
 
+## Next Step: Coding! 
 Next, go to gameScene.swift and just delete everything inside the class. This is what should remain: 
 
 ```
