@@ -67,7 +67,7 @@ override func didMove(to view: SKView) {
 Now run the app, you should see this
 <img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/screen12.png">
 
-### Add the monsters
+### Add the Alien Bugs
 
 Now, we want to add some enormous alien Bugs that our hero has to kill to defend herself. We want them to come from one end of the screen towards our hero. 
 
@@ -96,11 +96,11 @@ let moveAction = SKAction.move(to: CGPoint(x: -bug.size.width/2, y:  startingY),
 let finishAction = SKAction.removeFromParent()
 bug.run(SKAction.sequence([moveAction, finishAction]))
  ```
-So what are we doing here? To create the action, we're setting the duration to 2 seconds and the source position this sprite spawns from. After the action is comeplete, we remove it from the scene. Then, we run the action sequence, move, then disappear, this is so we can remove it from the scene when it is no longer visible. If we don't do this, we could end up having dozens of monsters consuming the memory of your iPhone and you can't even see them. This is what the full code looks like: 
+So what are we doing here? To create the action, we're setting the duration to 2 seconds and the source position this sprite spawns from. After the action is comeplete, we remove it from the scene. Then, we run the action sequence, move, then disappear, this is so we can remove it from the scene when it is no longer visible. If we don't do this, we could end up having dozens of bugs consuming the memory of your iPhone and you can't even see them. This is what the full code looks like: 
 ```
 func addBug() {
     let bug = SKSpriteNode(imageNamed: "bug")
-    let startingY = random(min: -monster.size.height, max: size.height - monster.size.height)
+    let startingY = random(min: -bug.size.height, max: size.height - bug.size.height)
     bug.position = CGPoint(x: size.width + bug.size.width/2, y:  startingY)
     bug.setScale(3)
     addChild(bug)
@@ -157,13 +157,13 @@ override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?){
 
 Next, we need to set up the original location of the projectile, you're probably used to this by now: create a sprite and set the location.
 ```
-  let projectile = SKSpriteNode(imageNamed: "projectile")
-  projectile.position = hero.position
+  let laserBall = SKSpriteNode(imageNamed: "laser")
+  laserBall.position = hero.position
 ```
-We need to check if the touch on the screen is valid. For instance, we don't want to our hero shoot behind herself. To do this, we need to calculate the offset of the location to the projectile.
+We need to check if the touch on the screen is valid. For instance, we don't want to our hero shoot behind herself. To do this, we need to calculate the offset of the location to the laserBall.
 Ideally, we would like it to be as simple as this:
 ```
-let offset = touchLocation - projectile.position
+let offset = touchLocation - laserBall.position
 if offset.x < 0 { return }
 ```
 However, there is no predefined operation '-' for CGPoint, we resolve this by using our helper file that implements the below function
@@ -172,12 +172,12 @@ func -(left: CGPoint, right: CGPoint) -> CGPoint {
   return CGPoint(x: left.x - right.x, y: left.y - right.y)
 }
 ```
-But let's not forget, we don't only want to show the projectile, we want to have an action that moves it across the screen towards the target. That means, we need to determine the direction of where to shoot. I hope you remember your highschool math, because this is what we will do
+But let's not forget, we don't only want to show the laserBall, we want to have an action that moves it across the screen towards the target. That means, we need to determine the direction of where to shoot. I hope you remember your highschool math, because this is what we will do
 1. Get the vector between the hero and the touch location
 2. Normalize the vector to have a unit vector that defines the desired direction
 3. Multiply that unit vector by a large number to get a far away point that goes beyond the screen
 Luckily we have our helper file to assist us in this endeavor, so we will just call the function that calculates the point for us. Make sure you understand the math behind it though!
-The steps described above are implemented under **findProjectileDestination**, you can see the details in the helper file.
+The steps described above are implemented under **findlaserBallDestination**, you can see the details in the helper file.
 ```
 override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
     guard let touch = touches.first else {
@@ -187,7 +187,7 @@ override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
     let laserBall = SKSpriteNode(imageNamed: "laser")
     laserBall.setScale(3)
     laserBall.position = hero.position
-    if let destinationPoint = CGPoint.findProjectileDestination(touchPoint: touchLocation, heroLocation: laserBall.position){
+    if let destinationPoint = CGPoint.findlaserBallDestination(touchPoint: touchLocation, heroLocation: laserBall.position){
         addChild(laserBall)
         let actionMove = SKAction.move(to: destinationPoint, duration: 2.0)
         let actionMoveDone = SKAction.removeFromParent()
@@ -215,7 +215,7 @@ Okay, here we are setting Physics categories. What are those?
       static let none      : UInt32 = 0
       static let all       : UInt32 = UInt32.max
       static let bug       : UInt32 = 0b1       // 1 Binary for 1 
-      static let projectile: UInt32 = 0b10      // 10 Binary for 2
+      static let laserBall: UInt32 = 0b10      // 10 Binary for 2
     }
     ```
 
@@ -230,31 +230,31 @@ go to **didMove(to:)** function and add the following code:
     physicsWorld.contactDelegate = self //the game scene is set as the delegate
 ```
 
-inside **addMonster()**, add these lines after creating the monster sprite:
+inside **addBug()**, add these lines after creating the bug sprite:
 
 ```
 bug.physicsBody = SKPhysicsBody(rectangleOf: bug.size) // create physics body, a rectangle like the picture shows
 bug.physicsBody?.isDynamic = true // *dynamic* sprite means move actions will control the movement of the bug (declared in touchesEnded(..) and not by the physics engine. If we set this as false, our code won't detect teh collisions, report it and make the sprites disappear anymore
 bug.physicsBody?.categoryBitMask = PhysicsCategory.bug // set category
-bug.physicsBody?.contactTestBitMask = PhysicsCategory.projectile // collision with which category should trigger a response (by notifying the contact delegate)
+bug.physicsBody?.contactTestBitMask = PhysicsCategory.laserBall // collision with which category should trigger a response (by notifying the contact delegate)
 bug.physicsBody?.collisionBitMask = PhysicsCategory.none // which category of object should the bug category have teh physics engine handle contact with, like bouncing off. We don't want the balls bouncing off the bugs so we set it to none.
 ```
 
 Now the same code is added after setting the laserBall position,
 ```
-laserBall.physicsBody = SKPhysicsBody(circleOfRadius: projectile.size.width/2)
+laserBall.physicsBody = SKPhysicsBody(circleOfRadius: laserBall.size.width/2)
 laserBall.physicsBody?.isDynamic = true
-laserBall.physicsBody?.categoryBitMask = PhysicsCategory.projectile
-laserBall.physicsBody?.contactTestBitMask = PhysicsCategory.monster
+laserBall.physicsBody?.categoryBitMask = PhysicsCategory.laserBall
+laserBall.physicsBody?.contactTestBitMask = PhysicsCategory.bug
 laserBall.physicsBody?.collisionBitMask = PhysicsCategory.none
-laserBall.physicsBody?.usesPreciseCollisionDetection = true //This is important to set for fast moving bodies like projectiles, because otherwise there is a chance that two fast moving bodies can pass through each other without a collision being detected.
+laserBall.physicsBody?.usesPreciseCollisionDetection = true //This is important to set for fast moving bodies like laserBalls, because otherwise there is a chance that two fast moving bodies can pass through each other without a collision being detected.
 ```
 
 We will aslo add this function to the end of **GameScene.swift** before the end of the class. 
 ```
 func laserBallDidCollideWithBug(laserBall: SKSpriteNode, bug: SKSpriteNode) {
-  projectile.removeFromParent()
-  monster.removeFromParent()
+  laserBall.removeFromParent()
+  bug.removeFromParent()
 }
 ```
 
@@ -263,7 +263,7 @@ Next, we declare our **contact delegate**. You can find it ready in the end of o
 The method **didBegin(..)** declared in the extension will be called whenever two physics bodies collide where their **contactTestBitMask** variable is declared as each other. What does the method do? Well, two main things. 
 1. It sorts the two colliding bodies into firstBody and secondBody based on the category. Since laserBall category is always less than bug category (1<2 always true), it always sets the firstBody to be the laserBall and the secondBody to be the bug.
 
-2. If the colliding bodies are indeed a bug and a laserBall, call **projectileDidCollideWithMonster(..)**
+2. If the colliding bodies are indeed a bug and a laserBall, call **laserBallDidCollideWithBug(..)**
 
 ## Final touches 
 ### Adding sounds
@@ -282,7 +282,7 @@ run(SKAction.playSoundFileNamed("pew-pew-lei.caf", waitForCompletion: false))
 It's time to take a look at our last helper file **GameOverScene.swift**
 
 Now, to use this file, we go to **GameScene.swift** and instead of only running the action sequence 
-`bug.run(SKAction.sequence([actionMove, actionMoveDone]))`, we replace this line by some code that creates a new "lose action" that displays the game over scene when a monster goes off-screen:
+`bug.run(SKAction.sequence([actionMove, actionMoveDone]))`, we replace this line by some code that creates a new "lose action" that displays the game over scene when a bug goes off-screen:
 
 ```
 let loseAction = SKAction.run() { [weak self] in
@@ -294,10 +294,10 @@ let loseAction = SKAction.run() { [weak self] in
 bug.run(SKAction.sequence([moveAction, loseAction, finishAction]))
 ```
 
-We should also add a counter to keep track of the number of bugs that we are destrying, we do this by adding a variable at the top of **GameScene** class `var monstersDestroyed = 0` then incrementing it with every successful collision by adding the below code to **laserBallDidCollideWithBug(laserBall : bug:)**
+We should also add a counter to keep track of the number of bugs that we are destrying, we do this by adding a variable at the top of **GameScene** class `var bugsDestroyed = 0` then incrementing it with every successful collision by adding the below code to **laserBallDidCollideWithBug(laserBall : bug:)**
 ```
-monstersDestroyed += 1
-if monstersDestroyed > 30 {
+bugsDestroyed += 1
+if bugsDestroyed > 30 {
   let reveal = SKTransition.flipHorizontal(withDuration: 0.5)
   let gameOverScene = GameOverScene(size: self.size, won: true)
   view?.presentScene(gameOverScene, transition: reveal)
