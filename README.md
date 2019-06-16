@@ -16,12 +16,17 @@ Let's start from the start, click on xcode app, currently the latest one availab
 Select game then fill in the game's name, we will creatively name it "codetechniqdemo", make sure the language is set at swift and don't worry about the other fields.
 Before we change anything, run the app on the simulator by pressing the "play" button on top. (image 4) Is what we get, when you click on the screen it generates colorful spinning rectangles that quickly disappear. We won't use most of this because our game is different, so we have to reove some code, and replace it with our own. Let's get started.
 
+As you can see in the first screenshot, we would like to have the app be only on landscape mode. So let's make sure it can't be used in portait mode by unchecking this box: 
+ <img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/screen0.png" width="50%" height="50%">
+ 
 First things first, let's make sure we download the art and sound for our game and have it ready in the Xcode project. Download the resources from [here](https://github.com/PhaelIshall/iOS-game-Tutorial/tree/master/game_art) (Go [here](https://github.com/PhaelIshall/iOS-game-Tutorial) and click on "download" then open the file "game_art".
 Drag and drop the contents of the folder into your xcode project just so: 
 ![Screenshot 6](https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/screen6.png)
 Make sure to select "copy items if necessary"
 ![Screenshot 7](https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/screen7.png)
-Now that's done, let's remove the current game in the project. Delete the file **GameScene.sks**, make sure to delete the right file. 
+Now that's done, let's remove the current game in the project. Open the file **GameScene.sks**, select the sprite that says "Hello World" and delete it.
+<img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/screen10.png" width="50%" height="50%">
+
 Next, go to gameScene.swift and just delete everything inside the class. This is what should remain: 
 
 ```
@@ -43,7 +48,7 @@ Go to your **GameScene.swift** file and add the following:
 let player = SKSpriteNode(imageNamed: "hero")
 override func didMove(to view: SKView) {
   backgroundColor = SKColor.white
-  player.position = CGPoint(x: size.width * 0.1, y: size.height * 0.5)
+  player.position = CGPoint(x: frame.midX, y: size.height * frame.midX)
   addChild(player)
 }
 ```
