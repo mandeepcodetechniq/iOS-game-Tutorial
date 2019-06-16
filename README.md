@@ -184,14 +184,14 @@ override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         return
     }
     let touchLocation = touch.location(in: self)
-    let projectile = SKSpriteNode(imageNamed: "laser")
-    projectile.setScale(3)
-    projectile.position = hero.position
-    if let destinationPoint = CGPoint.findProjectileDestination(touchPoint: touchLocation, heroLocation: projectile.position){
-        addChild(projectile)
+    let laserBall = SKSpriteNode(imageNamed: "laser")
+    laserBall.setScale(3)
+    laserBall.position = hero.position
+    if let destinationPoint = CGPoint.findProjectileDestination(touchPoint: touchLocation, heroLocation: laserBall.position){
+        addChild(laserBall)
         let actionMove = SKAction.move(to: destinationPoint, duration: 2.0)
         let actionMoveDone = SKAction.removeFromParent()
-        projectile.run(SKAction.sequence([actionMove, actionMoveDone]))
+        laserBall.run(SKAction.sequence([actionMove, actionMoveDone]))
     }else{
         return
     }
@@ -220,13 +220,6 @@ Okay, here we are setting Physics categories. What are those?
     ```
 
 6. Now that we know the basics, this is how we deal with collisions. We have a physics world, we set a **contact delegate** on it that will be notified when two bodies collide, like explained above, we'll get their categories and then make them disppear.
-    - Next, we declare our **contact delegate**. We do this by adding the following code at the end of **GameScene.swift**. To understand delegates better, you should read up about them in the apple docs as they are essential for game and app development in swift. 
-
-    ```
-    extension GameScene: SKPhysicsContactDelegate {
-        //We will add code here 
-    }
-    ```
 
 ### Coding the physics behind it all
 
@@ -259,10 +252,54 @@ laserBall.physicsBody?.usesPreciseCollisionDetection = true //This is important 
 
 We will aslo add this function to the end of **GameScene.swift** before the end of the class. 
 ```
-func projectileDidCollideWithMonster(projectile: SKSpriteNode, monster: SKSpriteNode) {
-  print("Hit")
+func laserBallDidCollideWithBug(laserBall: SKSpriteNode, bug: SKSpriteNode) {
   projectile.removeFromParent()
   monster.removeFromParent()
 }
 ```
 
+Next, we declare our **contact delegate**. You can find it ready in the end of our helper file. To understand delegates better, you should read up about them in the apple docs as they are essential for game and app development in swift. 
+
+The method **didBegin(..)** declared in the extension will be called whenever two physics bodies collide where their **contactTestBitMask** variable is declared as each other. What does the method do? Well, two main things. 
+1. It sorts the two colliding bodies into firstBody and secondBody based on the category. Since laserBall category is always less than bug category (1<2 always true), it always sets the firstBody to be the laserBall and the secondBody to be the bug.
+
+2. If the colliding bodies are indeed a bug and a laserBall, call **projectileDidCollideWithMonster(..)**
+
+## Final touches 
+### Adding sounds
+add this code to the end of **didMove(to:)**
+
+```
+let backgroundMusic = SKAudioNode(fileNamed: "background-music-aac.caf")
+backgroundMusic.autoplayLooped = true
+addChild(backgroundMusic)
+```
+We also would like there to be some laser sound effects when we shoot a laserBall, let's all this after the guard statement in **touchesEnded(..)** 
+```
+run(SKAction.playSoundFileNamed("pew-pew-lei.caf", waitForCompletion: false))
+```
+### Adding score and Game Over conditions
+It's time to take a look at our last helper file **GameOverScene.swift**
+
+Now, to use this file, we go to **GameScene.swift** and instead of only running the action sequence 
+`bug.run(SKAction.sequence([actionMove, actionMoveDone]))`, we replace this line by some code that creates a new "lose action" that displays the game over scene when a monster goes off-screen:
+
+```
+let loseAction = SKAction.run() { [weak self] in
+        guard let `self` = self else { return }
+        let reveal = SKTransition.flipHorizontal(withDuration: 0.5)
+        let gameOverScene = GameOverScene(size: self.size, won: false)
+        self.view?.presentScene(gameOverScene, transition: reveal)
+    }
+bug.run(SKAction.sequence([moveAction, loseAction, finishAction]))
+```
+
+We should also add a counter to keep track of the number of bugs that we are destrying, we do this by adding a variable at the top of **GameScene** class `var monstersDestroyed = 0` then incrementing it with every successful collision by adding the below code to **laserBallDidCollideWithBug(laserBall:bug:)**
+```
+monstersDestroyed += 1
+if monstersDestroyed > 30 {
+  let reveal = SKTransition.flipHorizontal(withDuration: 0.5)
+  let gameOverScene = GameOverScene(size: self.size, won: true)
+  view?.presentScene(gameOverScene, transition: reveal)
+}
+```
