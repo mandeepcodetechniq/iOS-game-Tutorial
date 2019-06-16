@@ -306,11 +306,13 @@ if monstersDestroyed > 30 {
 ## Does it get better? 
 
 Of course it does. Here are things you might not have noticed, and things we can improve and add: 
-    1. The bugs are actually flipped vertically and are flying backwards
-    2. Our hero, laserBall and bugs are not animated and can do better
-    3. We can have a background scene instead of a white screen to make it more game like
-    4. We can show the current score during the game
-    5. We can save the best score and compare against it with every game
-    
+
+1. The bugs are actually flipped vertically and are flying backwards
+2. Our hero, laserBall and bugs are not animated and can do better
+3. We can have a background scene instead of a white screen to make it more game like
+4. We can show the current score during the game
+5. We can save the best score and compare against it with every game
+6. Make it more difficult
+
 ### Let's animate: 
 
