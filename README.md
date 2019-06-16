@@ -294,7 +294,7 @@ let loseAction = SKAction.run() { [weak self] in
 bug.run(SKAction.sequence([moveAction, loseAction, finishAction]))
 ```
 
-We should also add a counter to keep track of the number of bugs that we are destrying, we do this by adding a variable at the top of **GameScene** class `var monstersDestroyed = 0` then incrementing it with every successful collision by adding the below code to **laserBallDidCollideWithBug(laserBall:bug:)**
+We should also add a counter to keep track of the number of bugs that we are destrying, we do this by adding a variable at the top of **GameScene** class `var monstersDestroyed = 0` then incrementing it with every successful collision by adding the below code to **laserBallDidCollideWithBug(laserBall : bug:)**
 ```
 monstersDestroyed += 1
 if monstersDestroyed > 30 {
@@ -303,3 +303,14 @@ if monstersDestroyed > 30 {
   view?.presentScene(gameOverScene, transition: reveal)
 }
 ```
+## Does it get better? 
+
+Of course it does. Here are things you might not have noticed, and things we can improve and add: 
+    1. The bugs are actually flipped vertically and are flying backwards
+    2. Our hero, laserBall and bugs are not animated and can do better
+    3. We can have a background scene instead of a white screen to make it more game like
+    4. We can show the current score during the game
+    5. We can save the best score and compare against it with every game
+    
+### Let's animate: 
+
