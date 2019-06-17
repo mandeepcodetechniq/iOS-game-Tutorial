@@ -3,16 +3,16 @@
 This will be a beginner's tutorial for making games on the iphone. Not all concepts will be explained in detail, so if you have anything you don't understand, don't worry, it's normal.
 
 So this is the story our game will have. We have an adventurer, who comes in contact with some alien insects and has to shoot them down or else she will die! This is what the main parts look like: 
-<img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/screen1.png">
+<img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/newScreen1.png">
 
 ## First steps: Setting up 
 Let's start from the start, click on xcode app, currently the latest one available on the app score is xcode 10.2.1 so make sure that is the one you have. This should show up, click on create a new Xcode project
 
 <p float="center">
- <img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/screen2.png" width="50%" height="50%">
- <img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/screen3.png" width="50%" height="50%">
-  <img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/screen4.png" width="50%" height="50%">
-  <img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/screen5.png" width="15%" height="15%">
+ <img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/screen2.png" width="45%" height="45%">
+ <img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/screen3.png" width="45%" height="45%">
+ <img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/screen4.png" width="45%" height="45%">
+ <img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/screen5.png" width="15%" height="15%">
 </p>
 
 Select game then fill in the game's name, we will creatively name it "codetechniqdemo", make sure the language is set at swift and don't worry about the other fields.
@@ -46,9 +46,10 @@ Now, lets get started. Open **GameScene.sks** and go to the icon circled below, 
 <img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/bar.png">
 
 Write in the search bar "Sprite" and drag **Color Sprite** onto ths screen boudaries. Go to the **Attributes inspector**, then texture and change it to **sky** (or whatever layer should be at the very back of your Scene). Also change **zPosition = -6**. **zPosition** determines which layers go on top of each other, the lower the number, the more in the back the picture is.
-<p>
-    <img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/texture.png">
-    <img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/scene.png">
+
+<p float="center">
+ <img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/texture.png" width="45% height="45%">
+ <img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/scene.png" width="45% height="45%">
 </p>
 
 Also, you'll notice that the orientation of the Scene is not landscape like we want. Go ahead and select **Scene** node and change the parameters as shown above.
@@ -138,10 +139,14 @@ let actionSequence = SKAction.sequence([SKAction.run(addBug),SKAction.wait(forDu
 run(SKAction.repeatForever(actionSequence))
 ```
 Now, build and run the project. What do you see? 
-Well, this looks very underwhelming. This is because we did not randomize the the positions the bugs come from. It makes a big difference! This is the code that implements **random()** functions: 
+Well, this looks very underwhelming.
+
+<img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/result1.png">
+
+This is because we did not randomize the the positions the bugs come from. It makes a big difference! This is the code that implements **random()** functions: 
 ```
  func random(min: CGFloat, max: CGFloat) -> CGFloat {
-        return CGFloat(Float.random(in: Float(min) ..< Float(max)))
+     return CGFloat(Float.random(in: Float(min) ..< Float(max)))
  }
     
 func addBug() {
@@ -156,6 +161,11 @@ func addBug() {
     bug.run(SKAction.sequence([moveAction, finishAction]))
 }
 ```
+
+The randomised generation of the bugs looks like this:
+
+<img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/result2.png">
+
 ### Shooting the bugs
 
 There are many ways we can implement shooting the bugs. The way I chose to to click on the bug to send an arrow from the hero towards it. 
@@ -179,8 +189,8 @@ override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?){
 
 Next, we need to set up the original location of the projectile, you're probably used to this by now: create a sprite and set the location.
 ```
-  let laserBall = SKSpriteNode(imageNamed: "laser")
-  laserBall.position = hero.position
+let laserBall = SKSpriteNode(imageNamed: "laser")
+laserBall.position = hero.position
 ```
 We need to check if the touch on the screen is valid. For instance, we don't want to our hero shoot behind herself. To do this, we need to calculate the offset of the location to the laserBall.
 Ideally, we would like it to be as simple as this:
@@ -199,6 +209,11 @@ But let's not forget, we don't only want to show the laserBall, we want to have 
 2. Normalize the vector to have a unit vector that defines the desired direction
 3. Multiply that unit vector by a large number to get a far away point that goes beyond the screen
 Luckily we have our helper file to assist us in this endeavor, so we will just call the function that calculates the point for us. Make sure you understand the math behind it though!
+
+Here's an image to explain the math a bit
+
+<img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/math.png">
+
 The steps described above are implemented under **findlaserBallDestination**, you can see the details in the helper file.
 ```
 override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -219,6 +234,11 @@ override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
     }
 }
 ```
+
+This is the result, the laser balls go right though the bug monsters. We don't want that! Now we need to use Physics to detect collisions.
+
+<img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/firstBall.png">
+
 ### Physics, finally! 
 SpriteKit comes with a built in Physics Engine, this means we can detect collision. Why do we want that? When a bug collides with the player, it's game over. When the laser ball collides with the bug, the bug dies. We want to implement that. 
 
@@ -232,14 +252,14 @@ Okay, here we are setting Physics categories. What are those?
 4,5. Like each type of  sprite has a physics body, each type of sprite also has a category. Let's name two categories, **bug** category and **laserBall** category. Now when two physics bodies collide (laser ball hits a bug), we can tell their categories and deal with them accordingly (remove both from screen for instance).
     - First, let's add this stuct to the top of **GameScene.swift**
       This is just the way to define categories in SpriteKit, using 32-bit integer acting as a bitmask. 
-    ```
-    struct PhysicsCategory {
-      static let none      : UInt32 = 0
-      static let all       : UInt32 = UInt32.max
-      static let bug       : UInt32 = 0b1       // 1 Binary for 1 
-      static let laserBall: UInt32 = 0b10      // 10 Binary for 2
-    }
-    ```
+```
+struct PhysicsCategory {
+    static let none      : UInt32 = 0
+    static let all       : UInt32 = UInt32.max
+    static let bug       : UInt32 = 0b1       // 1 Binary for 1 
+    static let laserBall: UInt32 = 0b10      // 10 Binary for 2
+}
+```
 
 6. Now that we know the basics, this is how we deal with collisions. We have a physics world, we set a **contact delegate** on it that will be notified when two bodies collide, like explained above, we'll get their categories and then make them disppear.
 
@@ -248,8 +268,8 @@ Okay, here we are setting Physics categories. What are those?
 go to **didMove(to:)** function and add the following code:
 
 ```
-    physicsWorld.gravity =.zero //No gravity in our physics world
-    physicsWorld.contactDelegate = self //the game scene is set as the delegate
+physicsWorld.gravity =.zero //No gravity in our physics world
+physicsWorld.contactDelegate = self //the game scene is set as the delegate
 ```
 
 inside **addBug()**, add these lines after creating the bug sprite:
@@ -272,7 +292,7 @@ laserBall.physicsBody?.collisionBitMask = PhysicsCategory.none
 laserBall.physicsBody?.usesPreciseCollisionDetection = true //This is important to set for fast moving bodies like laserBalls, because otherwise there is a chance that two fast moving bodies can pass through each other without a collision being detected.
 ```
 
-We will aslo add this function to the end of **GameScene.swift** before the end of the class. 
+We will also add this function to the end of **GameScene.swift** before the end of the class. 
 ```
 func laserBallDidCollideWithBug(laserBall: SKSpriteNode, bug: SKSpriteNode) {
   laserBall.removeFromParent()
@@ -282,7 +302,8 @@ func laserBallDidCollideWithBug(laserBall: SKSpriteNode, bug: SKSpriteNode) {
 
 Next, we declare our **contact delegate**. You can find it ready in the end of our helper file. To understand delegates better, you should read up about them in the apple docs as they are essential for game and app development in swift. 
 
-The method **didBegin(..)** declared in the extension will be called whenever two physics bodies collide where their **contactTestBitMask** variable is declared as each other. What does the method do? Well, two main things. 
+The method **didBegin(..)** declared in the extension will be called whenever two physics bodies collide where their **contactTestBitMask** variable is declared as each other. What does the method do? Well, two main things.
+
 1. It sorts the two colliding bodies into firstBody and secondBody based on the category. Since laserBall category is always less than bug category (1<2 always true), it always sets the firstBody to be the laserBall and the secondBody to be the bug.
 
 2. If the colliding bodies are indeed a bug and a laserBall, call **laserBallDidCollideWithBug(..)**
