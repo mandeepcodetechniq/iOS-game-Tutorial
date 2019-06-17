@@ -135,7 +135,7 @@ func addBug() {
 ```
 This is not enough, we need to call the function so that we can see the bugs on the screen. Since we want to generate several instances of bugs, we will add this action at the end of **didMove(to:)**. It repeats the call to the previous function, then it waits for 1 seconds, then repeats the same sequence.
 ```
-let actionSequence = SKAction.sequence([SKAction.run(addBug),SKAction.wait(forDuration: 1.0)])
+let actionSequence = SKAction.sequence([SKAction.run(addBug),SKAction.wait(forDuration: 0.75)])
 run(SKAction.repeatForever(actionSequence))
 ```
 Now, build and run the project. What do you see? 
@@ -309,6 +309,7 @@ The method **didBegin(..)** declared in the extension will be called whenever tw
 2. If the colliding bodies are indeed a bug and a laserBall, call **laserBallDidCollideWithBug(..)**
 
 ## Final touches 
+
 ### Adding sounds
 add this code to the end of **didMove(to:)**
 
@@ -359,9 +360,87 @@ Of course it does. Here are some things we can improve and add:
 
 ### Animate hero: 
 
-Well, this is pretty easy but it introduces a new concept called **Atlas**, this represents a group of images, each one is a frame of an animation. Together in gif format, they look like this: 
+Well, this is pretty easy, it introduces a new concept called **Texture Atlas**, this represents a big group of smaller images, each one is a frame of an animation. Together in gif format, they look like this: 
 <p>
     <img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/hero.gif">
     <img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/bug.gif">
     <img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/BallGIF.gif">
 </p>
+
+SpriteKit is optimized to work with texture atlases, this means that we can use animations in our game with improved memory usage and remdering performance.
+
+Drag all the folders in the **game_art** that end with * .atlas, similar to earlier, make sure to check *copy items if needed* 
+
+We will need to add one function. One that builds the images together, in order and adds the sprites onto the screen, animating them in an action. 
+
+This is it:
+
+```
+func animateSprite(named: String, timePerFrame: Double) -> (SKSpriteNode, [SKTexture]){
+    var spriteMovingFrames: [SKTexture] = []
+    let spriteAnimatedAtlas = SKTextureAtlas(named: named)
+    var moveFrames: [SKTexture] = []
+
+    //Make an array for all the frames in the moving Sprite (*spriteMovingFrames*)
+    let numImages = spriteAnimatedAtlas.textureNames.count
+    for i in 1...numImages {
+        let bugTextureName = "\(named)-\(i)"
+        moveFrames.append(spriteAnimatedAtlas.textureNamed(bugTextureName))
+    }
+    spriteMovingFrames = moveFrames
+    
+    //Create a sprite with the very first frame of the image and 
+    let firstFrameTexture = spriteMovingFrames[0]
+    let sprite = SKSpriteNode(texture: firstFrameTexture)
+    sprite.run(SKAction.repeatForever(
+        SKAction.animate(with: spriteMovingFrames,
+                         timePerFrame: timePerFrame,
+                         resize: false,
+                         restore: true)),
+               withKey:"movingSprite") //Animate the frames with the given timePerFrame
+    return (sprite, spriteMovingFrames) //returns a tuple tha contains the sprite itself and the frames of the animation
+}
+```
+
+Now, let's go to our **didMove(to:)** function and change **addChild(hero)** with **buildHero(). **:
+
+Here is the definition of buildHero():
+```
+private var heroMovingFrames: [SKTexture] = []
+var hero = SKSpriteNode(imageNamed: "hero")
+
+func buildHero() {
+   let animationResult = animateSprite(named: "hero", timePerFrame: 0.2)
+   heroMovingFrames = animationResult.1 //get the frames from the result
+   hero = animationResult.0 //get the sprite
+   hero.position = CGPoint(x: frame.minX + hero.size.width*2, y: frame.midY)
+   addChild(hero) //add the sprite to the scene
+}
+```
+
+We need to do the same for the **bug** and ball, it will only be by changing one line. 
+
+For the bug, we go to **addBug** function and instead of calling `let bug = SKSpriteNode(imageNamed: "bug")` to create the bug, we use `let bug = animateSprite(named: "bug", timePerFrame: 0.2).0`
+
+Similarly for the laserBall, we modify the function **touchesEnded** by changing `let laserBall = SKSpriteNode(imageNamed: "laser")` to `let laserBall = animateSprite(named: "LaserBall", timePerFrame: 0.75).0`
+
+
+## More to go!
+
+You can try to finish the other items on the list alone, there are plenty of resources to look into. Make the GameOverScenes better. Here's some inspiration! 
+
+ <img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/end.png">
+ 
+ Now march forth and make more and better games! 
+ 
+ ## Credits:
+ 
+ Free art assets (Hero, Bug, backgrounds) from https://*itch*.io/game-assets
+                                               https://openpixelproject.itch.io/opp2017sprites
+                                               
+Tutorial is inspired by *Raywenderlich* tutorial which is the most beginner one I found online. https://www.raywenderlich.com/144-spritekit-animations-and-texture-atlases-in-swift
+
+Sounds by *Ahmad Moussa* https://soundcloud.com/ahmad-moussa-16
+ 
+
+
