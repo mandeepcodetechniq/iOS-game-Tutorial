@@ -39,20 +39,19 @@ Now that's done, let's remove the current game in the project. Open the file **G
 
 The folder you downloaded comes with three sets of backgrounds. Choose the ones you like and drag the contents of the folder into the **Assets.xcassets**. This is the backgroudn image I chose:
 
-<img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/Battleground1.png">
+<img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/Battleground2.png">
 
-You'll notice that the orientation of the Scene is not landscape like we want. Go ahead and select **Scene** node and change the parameters as shown here: 
-
-<img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/scene.png">
-
-Now, lets get started. Open **GameScene.sks** and go to the icon circled below 
+Now, lets get started. Open **GameScene.sks** and go to the icon circled below, this is what you click on to add a sprite.
 
 <img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/bar.png">
 
 Write in the search bar "Sprite" and drag **Color Sprite** onto ths screen boudaries. Go to the **Attributes inspector**, then texture and change it to **sky** (or whatever layer should be at the very back of your Scene). Also change **zPosition = -6**. **zPosition** determines which layers go on top of each other, the lower the number, the more in the back the picture is.
+<p>
+    <img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/texture.png">
+    <img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/scene.png">
+</p>
 
-<img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/texture.png">
-
+Also, you'll notice that the orientation of the Scene is not landscape like we want. Go ahead and select **Scene** node and change the parameters as shown above.
 The result looks just like 
 
 <img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/sceneResult.png">
