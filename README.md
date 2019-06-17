@@ -47,8 +47,8 @@ Now, lets get started. Open **GameScene.sks** and go to the icon circled below, 
 
 Write in the search bar "Sprite" and drag **Color Sprite** onto ths screen boudaries. Go to the **Attributes inspector**, then texture and change it to **sky** (or whatever layer should be at the very back of your Scene). Also change **zPosition = -6**. **zPosition** determines which layers go on top of each other, the lower the number, the more in the back the picture is.
 <p>
-    <img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/texture.png">
-    <img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/scene.png">
+    <img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/texture.png" width="50% height="50%">
+    <img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/scene.png" width="50% height="50%">
 </p>
 
 Also, you'll notice that the orientation of the Scene is not landscape like we want. Go ahead and select **Scene** node and change the parameters as shown above.
