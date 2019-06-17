@@ -35,6 +35,28 @@ Open the file **Assets.xcassets** Open. Drag the file "Hero.png" into Assets lik
 Now that's done, let's remove the current game in the project. Open the file **GameScene.sks**, select the sprite that says "Hello World" and delete it.
 <img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/screen10.png">
 
+## Set background
+
+The folder you downloaded comes with three sets of backgrounds. Choose the ones you like and drag the contents of the folder into the **Assets.xcassets**. This is the backgroudn image I chose:
+
+<img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/Battleground1.png">
+
+You'll notice that the orientation of the Scene is not landscape like we want. Go ahead and select **Scene** node and change the parameters as shown here: 
+
+<img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/scene.png">
+
+Now, lets get started. Open **GameScene.sks** and go to the icon circled below 
+
+<img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/bar.png">
+
+Write in the search bar "Sprite" and drag **Color Sprite** onto ths screen boudaries. Go to the **Attributes inspector**, then texture and change it to **sky** (or whatever layer should be at the very back of your Scene). Also change **zPosition = -6**. **zPosition** determines which layers go on top of each other, the lower the number, the more in the back the picture is.
+
+<img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/texture.png">
+
+The result looks just like 
+
+<img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/sceneResult.png">
+
 ## Next Step: Coding!  
 Next, go to gameScene.swift and just delete everything inside the class. This is what should remain: 
 
@@ -47,8 +69,8 @@ class GameScene: SKScene {
 }
 ```
 
-
 ### Add the hero
+
 Now, let's get started! Open your **GameViewController.swift** file, this is what you should see: 
 <img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/screen9.png">
 
@@ -86,6 +108,7 @@ func addBug(){
     let bug = SKSpriteNode(imageNamed: "bug") // create a bug sprite 
     let startingY = frame.midY
     bug.position = CGPoint(x: size.width + bug.size.width/2, y:  startingY)
+    bug.xScale = abs(bug.xScale) * -1 //To flip the bug vertically because the original images is pointing to the left 
     addChild(bug)
 }
 ```
@@ -305,14 +328,20 @@ if bugsDestroyed > 30 {
 ```
 ## Does it get better? 
 
-Of course it does. Here are things you might not have noticed, and things we can improve and add: 
+Of course it does. Here are some things we can improve and add: 
 
-1. The bugs are actually flipped vertically and are flying backwards
-2. Our hero, laserBall and bugs are not animated and can do better
-3. We can have a background scene instead of a white screen to make it more game like
-4. We can show the current score during the game
-5. We can save the best score and compare against it with every game
-6. Make it more difficult
+1. Our hero, laserBall and bugs are not animated and can do better
+2. We can show the current score during the game
+3. We can save the best score and compare against it with every game
+4. Make it more difficult
 
-### Let's animate: 
+## Let's animate: 
 
+### Animate hero: 
+
+Well, this is pretty easy but it introduces a new concept called **Atlas**, this represents a group of images, each one is a frame of an animation. Together in gif format, they look like this: 
+<p>
+    <img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/hero.gif">
+    <img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/bug.gif">
+    <img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/BallGIF.gif">
+</p>
