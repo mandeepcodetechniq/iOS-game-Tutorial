@@ -1,12 +1,12 @@
 # iOS-game-Tutorial
 
-This will be a beginner's tutorial for making games on the iphone. Not all concepts will be explained in detail, so if you have anything you don't understand, don't worry, it's normal.
+This will be a beginner's tutorial for making games on the iPhone. Not all concepts will be explained in detail, so if you have anything you don't understand, don't worry, it's normal.
 
 So this is the story our game will have. We have an adventurer, who comes in contact with some alien insects and has to shoot them down or else she will die! This is what the main parts look like: 
 <img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/newScreen1.png">
 
 ## First steps: Setting up 
-Let's start from the start, click on xcode app, currently the latest one available on the app score is xcode 10.2.1 so make sure that is the one you have. This should show up, click on create a new Xcode project
+Let's start from the start, click on Xcode app, currently, the latest one available on the app score is Xcode 10.2.1 so make sure that is the one you have. This should show up, click on create a new Xcode project
 
 <p float="center">
  <img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/screen2.png" width="45%" height="45%">
@@ -23,7 +23,7 @@ As you can see in the first screenshot, we would like to have the app be only on
  <img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/screen0.png">
  
 First things first, let's make sure we download the art and sound for our game and have it ready in the Xcode project. Download the resources from [here](https://github.com/PhaelIshall/iOS-game-Tutorial) and click on "download" then open the file "game_art".
-Drag and drop the file **sounds** in the folder **game_art** into your xcode project just so: 
+Drag and drop the file **sounds** in the folder **game_art** into your Xcode project just so: 
 ![Screenshot 6](https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/assets1-.png)
 Make sure to select "copy items if necessary"
 ![Screenshot 7](https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/screen7.png)
@@ -39,17 +39,17 @@ Now that's done, let's remove the current game in the project. Open the file **G
 
 ## Set background
 
-The folder you downloaded comes with three sets of backgrounds. Choose the ones you like and drag the contents of the folder into the **Assets.xcassets**. This is the backgroudn image I chose (Background 2):
+The folder you downloaded comes with three sets of backgrounds. Choose the ones you like and drag the contents of the folder into the **Assets.xcassets**. This is the background image I chose (Background 2):
 
 <img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/Battleground2.png">
 
-Now, lets get started. Open **GameScene.sks** and go to the icon circled below, this is what you click on to add a sprite.
+Now, let's get started. Open **GameScene.sks** and go to the icon circled below, this is what you click on to add a sprite.
 
 <img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/bar.png">
 
 Write in the search bar "Sprite" and drag **Color Sprite** onto ths screen boudaries. Go to the **Attributes inspector**, then texture and change it to **sky** (or whatever layer should be at the very back of your Scene) and change the name of the Sprite from **SKSpriteNode** to a meaningful name about the image (sky, tree, grass, etc.) 
 
-Now, the image is not entirely within the scene boundaries. Resize your sprite to fit into the the rectangle in the file **GameScene.sks**. Also change **zPosition = -(#numberof images in background folder)**. **zPosition** determines which layers go on top of each other, the lower the number, the more in the back the picture is.
+Now, the image is not entirely within the scene boundaries. Resize your sprite to fit into the rectangle in the file **GameScene.sks**. Also change **zPosition = -(#numberof images in background folder)**. **zPosition** determines which layers go on top of each other, the lower the number, the more in the back the picture is.
 
 Now, go through all the textures that are in the folder of your chosen background, don't forget to set the zPosition that corresponds to the best output. For example, for background 2 is the order from back to front is *sky -> jungle_bg -> trees and bushes -> grasses -> grass&road ->  fireflies -> lianas -> tree_face*  
 
@@ -171,7 +171,7 @@ Well, this looks very underwhelming.
 
 <img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/result1-1.png">
 
-This is because we did not randomize the the positions the bugs come from. It makes a big difference! This is the code that implements **random()** functions: 
+This is because we did not randomize the positions the bugs come from. It makes a big difference! This is the code that implements **random()** functions: 
 ```
  func random(min: CGFloat, max: CGFloat) -> CGFloat {
      return CGFloat(Float.random(in: Float(min) ..< Float(max)))
@@ -190,13 +190,13 @@ func addBug() {
  }
 ```
 
-The randomised generation of the bugs looks like this:
+The randomized generation of the bugs looks like this:
 
 <img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/result2-2.png">
 
 ### Shooting the bugs
 
-There are many ways we can implement shooting the bugs. The way I chose to click on the bug to send an a laser ball from the hero towards it. 
+There are many ways we can implement shooting the bugs. The way I chose to click on the bug to send a laser ball from the hero towards it. 
 
 We need to override a predefined function called **touchesEnded** in **GameScene.swift**, see below 
 ```
@@ -266,12 +266,12 @@ override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
 }
 ```
 
-This is the result, the laser balls go right though the bug monsters. We don't want that! Now we need to use Physics to detect collisions.
+This is the result, the laser balls go right through the bug monsters. We don't want that! Now we need to use Physics to detect collisions.
 
 <img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/firstBall-1.png">
 
 ### Physics, finally! 
-SpriteKit comes with a built in Physics Engine, this means we can detect collision. Why do we want that? When a bug collides with the player, it's game over. When the laser ball collides with the bug, the bug dies. We want to implement that. 
+SpriteKit comes with a built-in Physics Engine, this means we can detect collision. Why do we want that? When a bug collides with the player, it's game over. When the laser ball collides with the bug, the bug dies. We want to implement that. 
 
 Okay, here we are setting Physics categories. What are those? 
 <img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/expl.png">
@@ -281,7 +281,7 @@ Okay, here we are setting Physics categories. What are those?
 2,3. Each sprite will have a **physics body** that constitutes the boundaries of where we will start counting collisions. You can see in the photo above, we assign a *ball* physics body to the laser ball and a *rectangle* to the bug. As you can tell, it doesn't have to be very accurate, just needs to get the job done, so an approximation is good enough.
 
 4,5. Like each type of  sprite has a physics body, each type of sprite also has a category. Let's name two categories, **bug** category and **laserBall** category. Now when two physics bodies collide (laser ball hits a bug), we can tell their categories and deal with them accordingly (remove both from screen for instance).
-    - First, let's add this stuct to the top of **GameScene.swift**
+    - First, let's add this struct to the top of **GameScene.swift**
       This is just the way to define categories in SpriteKit, using 32-bit integer acting as a bitmask. 
 ```
 struct PhysicsCategory {
@@ -292,7 +292,7 @@ struct PhysicsCategory {
 }
 ```
 
-6. Now that we know the basics, this is how we deal with collisions. We have a physics world, we set a **contact delegate** on it that will be notified when two bodies collide, like explained above, we'll get their categories and then make them disppear.
+6. Now that we know the basics, this is how we deal with collisions. We have a physics world, we set a **contact delegate** on it that will be notified when two bodies collide, like explained above, we'll get their categories and then make them disappear.
 
 ### Coding the physics behind it all
 
@@ -310,7 +310,7 @@ bug.physicsBody = SKPhysicsBody(rectangleOf: bug.size) // create physics body, a
 bug.physicsBody?.isDynamic = true // *dynamic* sprite means move actions will control the movement of the bug (declared in touchesEnded(..) and not by the physics engine. If we set this as false, our code won't detect teh collisions, report it and make the sprites disappear anymore
 bug.physicsBody?.categoryBitMask = PhysicsCategory.bug // set category
 bug.physicsBody?.contactTestBitMask = PhysicsCategory.laserBall // collision with which category should trigger a response (by notifying the contact delegate)
-bug.physicsBody?.collisionBitMask = PhysicsCategory.none // which category of object should the bug category have teh physics engine handle contact with, like bouncing off. We don't want the balls bouncing off the bugs so we set it to none.
+bug.physicsBody?.collisionBitMask = PhysicsCategory.none // which category of object should the bug category have the physics engine handle contact with, like bouncing off. We don't want the balls bouncing off the bugs so we set it to none.
 ```
 
 Now the same code is added after setting the laserBall position in **touchesEnded(..)**,
@@ -474,7 +474,7 @@ You can try to finish the other items on the list alone, there are plenty of res
  Free art assets (Hero, Bug, backgrounds) from https://*itch*.io/game-assets
                                                https://openpixelproject.itch.io/opp2017sprites
                                                
-Tutorial is inspired by *Raywenderlich* tutorial which is the most beginner one I found online. https://www.raywenderlich.com/144-spritekit-animations-and-texture-atlases-in-swift
+Tutorial inspired by *Raywenderlich* tutorial which is the most beginner one I found online. https://www.raywenderlich.com/144-spritekit-animations-and-texture-atlases-in-swift
 
 Music by *Ahmad Moussa* https://soundcloud.com/ahmad-moussa-16
  
