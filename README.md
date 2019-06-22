@@ -24,14 +24,14 @@ As you can see in the first screenshot, we would like to have the app be only on
  
 First things first, let's make sure we download the art and sound for our game and have it ready in the Xcode project. Download the resources from [here](https://github.com/PhaelIshall/iOS-game-Tutorial) and click on "download" then open the file "game_art".
 Drag and drop the file **sounds** in the folder **game_art** into your xcode project just so: 
-![Screenshot 6](https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/assets1.png)
+![Screenshot 6](https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/assets1-.png)
 Make sure to select "copy items if necessary"
 ![Screenshot 7](https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/screen7.png)
 
 Open the file **Assets.xcassets** Open. Drag the file "hero.png", "bug.png" and "laserBall.png" into Assets like so: 
 
-<img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/assets2-1.png">
-<img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/assets2-2.png">
+<img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/assets2-1-.png">
+<img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/assets2-2-.png">
 
 
 Now that's done, let's remove the current game in the project. Open the file **GameScene.sks**, select the sprite that says "Hello World" and delete it.
