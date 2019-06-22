@@ -11,7 +11,7 @@ import SpriteKit
 
 class Helper {
     //Please look at the described steps in the github demo to understand better what is happening here
-    static func findProjectileDestination(touchPoint: CGPoint, heroLocation: CGPoint) -> CGPoint?{
+    static func findLaserBallDestination(touchPoint: CGPoint, heroLocation: CGPoint) -> CGPoint?{
         let offset = touchPoint - heroLocation
         if offset.x < 0 { return nil}
         let direction = offset.normalized()
@@ -46,7 +46,7 @@ extension CGPoint {
     }
 }
 extension GameScene: SKPhysicsContactDelegate {
-    func didBegin(_ contact: SKPhysicsContact) {
+    /*func didBegin(_ contact: SKPhysicsContact) {
         // 1
         var firstBody: SKPhysicsBody
         var secondBody: SKPhysicsBody
@@ -60,11 +60,12 @@ extension GameScene: SKPhysicsContactDelegate {
         
         // 2
         if ((firstBody.categoryBitMask & PhysicsCategory.bug != 0) &&
-            (secondBody.categoryBitMask & PhysicsCategory.projectile != 0)) {
-            if let monster = firstBody.node as? SKSpriteNode,
-                let projectile = secondBody.node as? SKSpriteNode {
-                projectileDidCollideWithMonster(projectile: projectile, monster: monster)
+            (secondBody.categoryBitMask & PhysicsCategory.laserBall != 0)) {
+            if let bug = firstBody.node as? SKSpriteNode,
+                let laserBall = secondBody.node as? SKSpriteNode {
+                laserBallDidCollideWithBug(laserBall: laserBall, bug: bug)
             }
         }
     }
+    */
 }
