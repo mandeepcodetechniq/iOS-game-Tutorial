@@ -183,7 +183,7 @@ The randomised generation of the bugs looks like this:
 
 There are many ways we can implement shooting the bugs. The way I chose to to click on the bug to send an arrow from the hero towards it. 
 
-We need to override a predefined function called **touchesEnded**, see below 
+We need to override a predefined function called **touchesEnded** in **GameScene.swift**, see below 
 ```
 override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?){
    //Add code here 
@@ -228,6 +228,8 @@ Here's an image to explain the math a bit
 <img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/math.png">
 
 The steps described above are implemented under **findlaserBallDestination**, you can see the details in the helper file.
+
+This is how we use **findlaserBallDestination** function in **GameScene.swift**
 ```
 override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
     guard let touch = touches.first else {
@@ -235,9 +237,8 @@ override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
     }
     let touchLocation = touch.location(in: self)
     let laserBall = SKSpriteNode(imageNamed: "laserball1")
-    laserBall.setScale(3)
     laserBall.position = hero.position
-    if let destinationPoint = CGPoint.findlaserBallDestination(touchPoint: touchLocation, heroLocation: laserBall.position){
+    if let destinationPoint = Helper.findLaserBallDestination(touchPoint: touchLocation, heroLocation: laserBall.position){
         addChild(laserBall)
         let actionMove = SKAction.move(to: destinationPoint, duration: 2.0)
         let actionMoveDone = SKAction.removeFromParent()
