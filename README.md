@@ -63,13 +63,18 @@ Also, you'll notice that the orientation of the Scene is not landscape like we w
 Here are the first steps
 
 <p float="center">
- <img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/0.png" width="45% height="45%">
- <img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/1.png" width="45% height="45%">
-  <img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/2.png" width="45% height="45%">
-  (Don't forget to change the name of the sprite to something meaninful)                                                                                                         
- <img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/3.png" width="45% height="45%">
-  <img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/4.png" width="45% height="45%">
- <img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/5.png" width="45% height="45%">
+ Drag the files in the background folder into your Assets folder
+ <img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/0.png" >
+ Create a new color sprite 
+ <img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/1.png" >
+ Add texture and name of Sprite and change the size to fit the small rectangle on the screen
+  <img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/2.png"> 
+ Don't forget the name!
+ <img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/3.png" >
+ Add another sprite and select its texture
+  <img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/4.png" >
+ <img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/5.png" >
+ The new sprite will cover the one behind it. Set its zposition to +1 the zposition of its background. 
 </p>
 
 The result looks just like 
