@@ -60,9 +60,9 @@ extension GameScene: SKPhysicsContactDelegate {
         
         // 2
         if ((firstBody.categoryBitMask & PhysicsCategory.bug != 0) &&
-            (secondBody.categoryBitMask & PhysicsCategory.projectile != 0)) {
+            (secondBody.categoryBitMask & PhysicsCategory.laserBall != 0)) {
             if let bug = firstBody.node as? SKSpriteNode,
-                let projectile = secondBody.node as? SKSpriteNode {
+                let laserBall = secondBody.node as? SKSpriteNode {
                 laserBallDidCollideWithBug(laserBall: laserBall, bug: bug)
             }
         }
