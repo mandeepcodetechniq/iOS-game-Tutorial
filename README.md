@@ -23,16 +23,16 @@ As you can see in the first screenshot, we would like to have the app be only on
  <img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/screen0.png">
  
 First things first, let's make sure we download the art and sound for our game and have it ready in the Xcode project. Download the resources from [here](https://github.com/PhaelIshall/iOS-game-Tutorial) and click on "download" then open the file "game_art".
-Drag and drop the contents of the three folders in the screenshot into your xcode project just so: 
-![Screenshot 6](https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/screen6.png)
+Drag and drop the file **sounds** in the folder **game_art** into your xcode project just so: 
+![Screenshot 6](https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/assets1.png)
 Make sure to select "copy items if necessary"
 ![Screenshot 7](https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/screen7.png)
 
-Open the file **Assets.xcassets** Open. Drag the file "Hero.png" into Assets like so: 
+Open the file **Assets.xcassets** Open. Drag the file "hero.png", "bug.png" and "laserBall.png" into Assets like so: 
 
-<img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/screen11.png">
+<img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/assets2-1.png">
+<img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/assets2-2.png">
 
-Repeat the same process for **Laserball1.png** and **bug.png**
 
 Now that's done, let's remove the current game in the project. Open the file **GameScene.sks**, select the sprite that says "Hello World" and delete it.
 <img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/screen10.png">
@@ -60,6 +60,18 @@ Now, go through all the textures that are in the folder of your chosen backgroun
 
 Also, you'll notice that the orientation of the Scene is not landscape like we want. Go ahead and select **Scene** node and change the parameters as shown above.
 
+Here are the first steps
+
+<p float="center">
+ <img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/0.png" width="45% height="45%">
+ <img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/1.png" width="45% height="45%">
+  <img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/2.png" width="45% height="45%">
+  (Don't forget to change the name of the sprite to something meaninful)                                                                                                         
+ <img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/3.png" width="45% height="45%">
+  <img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/4.png" width="45% height="45%">
+ <img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/5.png" width="45% height="45%">
+</p>
+
 The result looks just like 
 
 <img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/sceneResult.png">
@@ -85,7 +97,7 @@ This is a normal UIViewController (think of it like the code behind what you see
 Let's start by adding our player to the screen. All our characters will start as static images without animation. Later on, we will add animation as a bonus. 
 Go to your **GameScene.swift** file and add the following:
 ```
-let hero = SKSpriteNode(imageNamed: "Hero") //Create Sprite for hero 
+let hero = SKSpriteNode(imageNamed: "hero") //Create Sprite for hero 
 override func didMove(to view: SKView) {
     backgroundColor = SKColor.white
     hero.position = CGPoint(x: frame.midX, y: frame.midY) //position in the middle of the screen
@@ -119,12 +131,11 @@ func addBug(){
     let bug = SKSpriteNode(imageNamed: "bug") // create a bug sprite 
     let startingY = frame.midY
     bug.position = CGPoint(x: size.width + bug.size.width/2, y:  startingY)
-    bug.setScale(3)
     bug.xScale = abs(bug.xScale) * -1 //To flip the bug vertically because the original images is pointing to the left 
     addChild(bug)
 }
 ```
-This should look familiar, since it is exactly what we did for the player. For now, all the monsters will start from the same point. While the x is set to slightly outside of the screen (*size.width + bug.size.width/2*) and y is the middle of the screen. This is still missing the movement. Add this bellow the previous code: 
+This should look familiar, since it is exactly what we did for the player. For now, all the monsters will start from the same point. While the x is set to slightly outside of the screen (*size.width + bug.size.width/2*) and y is the middle of the screen. This is still missing the movement. Add this below the previous code: 
 ```
 let duration = CGFloat(2.0)
 let moveAction = SKAction.move(to: CGPoint(x: -bug.size.width/2, y:  startingY), duration: TimeInterval(duration))
@@ -137,7 +148,6 @@ func addBug() {
     let bug = SKSpriteNode(imageNamed: "bug")
     let startingY = frame.midY
     bug.position = CGPoint(x: size.width + bug.size.width/2, y:  startingY)
-    bug.setScale(3)
     bug.xScale = abs(bug.xScale) * -1
     addChild(bug)
     let duration = CGFloat(2.0)
@@ -154,7 +164,7 @@ run(SKAction.repeatForever(actionSequence))
 Now, build and run the project. What do you see? 
 Well, this looks very underwhelming.
 
-<img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/result1.png">
+<img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/result1-1.png">
 
 This is because we did not randomize the the positions the bugs come from. It makes a big difference! This is the code that implements **random()** functions: 
 ```
@@ -177,7 +187,7 @@ func addBug() {
 
 The randomised generation of the bugs looks like this:
 
-<img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/result2.png">
+<img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/result2-2.png">
 
 ### Shooting the bugs
 
@@ -202,7 +212,7 @@ override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?){
 
 Next, we need to set up the original location of the projectile, you're probably used to this by now: create a sprite and set the location.
 ```
-let laserBall = SKSpriteNode(imageNamed: "laserball1")
+let laserBall = SKSpriteNode(imageNamed: "laserball")
 laserBall.position = hero.position
 ```
 We need to check if the touch on the screen is valid. For instance, we don't want to our hero shoot behind herself. To do this, we need to calculate the offset of the location to the laserBall.
@@ -223,7 +233,9 @@ But let's not forget, we don't only want to show the laserBall, we want to have 
 3. Multiply that unit vector by a large number to get a far away point that goes beyond the screen
 Luckily we have our helper file to assist us in this endeavor, so we will just call the function that calculates the point for us. Make sure you understand the math behind it though!
 
-Here's an image to explain the math a bit
+**NOTE: Helper file is located in the folder you downloaded ealier under the "helpers" folder, drag and drop the "helpers" folder into the project and select copy items if necessary**
+
+Here's an image to explain the math behind the laser ball shooting mechanism:
 
 <img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/math.png">
 
@@ -236,7 +248,7 @@ override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         return
     }
     let touchLocation = touch.location(in: self)
-    let laserBall = SKSpriteNode(imageNamed: "laserball1")
+    let laserBall = SKSpriteNode(imageNamed: "laserBall")
     laserBall.position = hero.position
     if let destinationPoint = Helper.findLaserBallDestination(touchPoint: touchLocation, heroLocation: laserBall.position){
         addChild(laserBall)
@@ -251,7 +263,7 @@ override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
 
 This is the result, the laser balls go right though the bug monsters. We don't want that! Now we need to use Physics to detect collisions.
 
-<img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/firstBall.png">
+<img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/firstBall-1.png">
 
 ### Physics, finally! 
 SpriteKit comes with a built in Physics Engine, this means we can detect collision. Why do we want that? When a bug collides with the player, it's game over. When the laser ball collides with the bug, the bug dies. We want to implement that. 
@@ -282,7 +294,7 @@ struct PhysicsCategory {
 go to **didMove(to:)** function and add the following code:
 
 ```
-physicsWorld.gravity =.zero //No gravity in our physics world
+physicsWorld.gravity = .zero //No gravity in our physics world
 physicsWorld.contactDelegate = self //the game scene is set as the delegate
 ```
 
@@ -296,7 +308,7 @@ bug.physicsBody?.contactTestBitMask = PhysicsCategory.laserBall // collision wit
 bug.physicsBody?.collisionBitMask = PhysicsCategory.none // which category of object should the bug category have teh physics engine handle contact with, like bouncing off. We don't want the balls bouncing off the bugs so we set it to none.
 ```
 
-Now the same code is added after setting the laserBall position,
+Now the same code is added after setting the laserBall position in **touchesEnded(..)**,
 ```
 laserBall.physicsBody = SKPhysicsBody(circleOfRadius: laserBall.size.width/2)
 laserBall.physicsBody?.isDynamic = true
@@ -314,7 +326,7 @@ func laserBallDidCollideWithBug(laserBall: SKSpriteNode, bug: SKSpriteNode) {
 }
 ```
 
-Next, we declare our **contact delegate**. You can find it ready in the end of our helper file. To understand delegates better, you should read up about them in the apple docs as they are essential for game and app development in swift. 
+Next, we declare our **contact delegate**. You can find it ready in the end of our helper file and you **must uncomment it** for this to work.  To understand delegates better, you should read up about them in the apple docs as they are essential for game and app development in swift. 
 
 The method **didBegin(..)** declared in the extension will be called whenever two physics bodies collide where their **contactTestBitMask** variable is declared as each other. What does the method do? Well, two main things.
 
@@ -328,7 +340,7 @@ The method **didBegin(..)** declared in the extension will be called whenever tw
 add this code to the end of **didMove(to:)**
 
 ```
-let backgroundMusic = SKAudioNode(fileNamed: "background-music-aac.caf")
+let backgroundMusic = SKAudioNode(fileNamed: "Music.wav")
 backgroundMusic.autoplayLooped = true
 addChild(backgroundMusic)
 ```
@@ -352,7 +364,7 @@ let loseAction = SKAction.run() { [weak self] in
 bug.run(SKAction.sequence([moveAction, loseAction, finishAction]))
 ```
 
-We should also add a counter to keep track of the number of bugs that we are destrying, we do this by adding a variable at the top of **GameScene** class `var bugsDestroyed = 0` then incrementing it with every successful collision by adding the below code to **laserBallDidCollideWithBug(laserBall : bug:)**
+We should also add a counter to keep track of the number of bugs that we are destroying, we do this by adding a variable at the top of **GameScene** class `var bugsDestroyed = 0` then incrementing it with every successful collision by adding the below code to **laserBallDidCollideWithBug(laserBall : bug:)**
 ```
 bugsDestroyed += 1
 if bugsDestroyed > 30 {
@@ -381,11 +393,11 @@ Well, this is pretty easy, it introduces a new concept called **Texture Atlas**,
     <img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/BallGIF.gif">
 </p>
 
-SpriteKit is optimized to work with texture atlases, this means that we can use animations in our game with improved memory usage and remdering performance.
+SpriteKit is optimized to work with texture atlases, this means that we can use animations in our game with improved memory usage and rendering performance.
 
 Drag all the folders in the **game_art** that end with * .atlas, similar to earlier, make sure to check *copy items if needed* 
 
-We will need to add one function. One that builds the images together, in order and adds the sprites onto the screen, animating them in an action. 
+We will need to add one function to **GameScene.swift**. One that builds the images together, in order and adds the sprites onto the screen, animating them in an action. 
 
 This is it:
 
@@ -420,9 +432,6 @@ Now, let's go to our **didMove(to:)** function and change **addChild(hero)** wit
 
 Here is the definition of buildHero():
 ```
-private var heroMovingFrames: [SKTexture] = []
-var hero = SKSpriteNode(imageNamed: "hero")
-
 func buildHero() {
    let animationResult = animateSprite(named: "hero", timePerFrame: 0.2)
    heroMovingFrames = animationResult.1 //get the frames from the result
@@ -432,11 +441,19 @@ func buildHero() {
 }
 ```
 
+for this to work, on the top of the class **GameScene**, we need to make some changes. First, let's declare the moving frames of our hero animation:
+
+```
+private var heroMovingFrames: [SKTexture] = []
+```
+and second, let's change our hero sprite from `let hero = SKSpriteNode(imageNamed: "hero")` to `var hero = SKSpriteNode(imageNamed: "hero")` so we can change its value to every corresponding frame
+
+
 We need to do the same for the **bug** and ball, it will only be by changing one line. 
 
 For the bug, we go to **addBug** function and instead of calling `let bug = SKSpriteNode(imageNamed: "bug")` to create the bug, we use `let bug = animateSprite(named: "bug", timePerFrame: 0.2).0`
 
-Similarly for the laserBall, we modify the function **touchesEnded** by changing `let laserBall = SKSpriteNode(imageNamed: "laser")` to `let laserBall = animateSprite(named: "LaserBall", timePerFrame: 0.75).0`
+Similarly for the laserBall, we modify the function **touchesEnded** by changing `let laserBall = SKSpriteNode(imageNamed: "laser")` to `let laserBall = animateSprite(named: "laserBall", timePerFrame: 0.75).0`
 
 
 ## More to go!
@@ -454,7 +471,7 @@ You can try to finish the other items on the list alone, there are plenty of res
                                                
 Tutorial is inspired by *Raywenderlich* tutorial which is the most beginner one I found online. https://www.raywenderlich.com/144-spritekit-animations-and-texture-atlases-in-swift
 
-Sounds by *Ahmad Moussa* https://soundcloud.com/ahmad-moussa-16
+Music by *Ahmad Moussa* https://soundcloud.com/ahmad-moussa-16
  
 
 
