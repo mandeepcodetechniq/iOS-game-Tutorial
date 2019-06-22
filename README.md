@@ -16,13 +16,13 @@ Let's start from the start, click on xcode app, currently the latest one availab
 </p>
 
 Select game then fill in the game's name, we will creatively name it "codetechniqdemo", make sure the language is set at swift and don't worry about the other fields.
-Before we change anything, run the app on the simulator by pressing the "play" button on top. (image 4) Is what we get, when you click on the screen it generates colorful spinning rectangles that quickly disappear. We won't use most of this because our game is different, so we have to reove some code, and replace it with our own. Let's get started.
+Before we change anything, run the app on the simulator by pressing the "play" button on top. (image 4) Is what we get, when you click on the screen it generates colorful spinning rectangles that quickly disappear. We won't use most of this because our game is different, so we have to remove some code, and replace it with our own. Let's get started.
 
 As you can see in the first screenshot, we would like to have the app be only on landscape mode. So let's make sure it can't be used in portait mode by unchecking this box: 
 
  <img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/screen0.png">
  
-First things first, let's make sure we download the art and sound for our game and have it ready in the Xcode project. Download the resources from [here](https://github.com/PhaelIshall/iOS-game-Tutorial/tree/master/game_art) (Go [here](https://github.com/PhaelIshall/iOS-game-Tutorial) and click on "download" then open the file "game_art".
+First things first, let's make sure we download the art and sound for our game and have it ready in the Xcode project. Download the resources from [here](https://github.com/PhaelIshall/iOS-game-Tutorial) and click on "download" then open the file "game_art".
 Drag and drop the contents of the three folders in the screenshot into your xcode project just so: 
 ![Screenshot 6](https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/screen6.png)
 Make sure to select "copy items if necessary"
@@ -32,12 +32,14 @@ Open the file **Assets.xcassets** Open. Drag the file "Hero.png" into Assets lik
 
 <img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/screen11.png">
 
+Repeat the same process for **Laserball1.png** and **bug.png**
+
 Now that's done, let's remove the current game in the project. Open the file **GameScene.sks**, select the sprite that says "Hello World" and delete it.
 <img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/screen10.png">
 
 ## Set background
 
-The folder you downloaded comes with three sets of backgrounds. Choose the ones you like and drag the contents of the folder into the **Assets.xcassets**. This is the backgroudn image I chose:
+The folder you downloaded comes with three sets of backgrounds. Choose the ones you like and drag the contents of the folder into the **Assets.xcassets**. This is the backgroudn image I chose (Background 2):
 
 <img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/Battleground2.png">
 
@@ -45,7 +47,11 @@ Now, lets get started. Open **GameScene.sks** and go to the icon circled below, 
 
 <img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/bar.png">
 
-Write in the search bar "Sprite" and drag **Color Sprite** onto ths screen boudaries. Go to the **Attributes inspector**, then texture and change it to **sky** (or whatever layer should be at the very back of your Scene). Also change **zPosition = -6**. **zPosition** determines which layers go on top of each other, the lower the number, the more in the back the picture is.
+Write in the search bar "Sprite" and drag **Color Sprite** onto ths screen boudaries. Go to the **Attributes inspector**, then texture and change it to **sky** (or whatever layer should be at the very back of your Scene) and change the name of the Sprite from **SKSpriteNode** to a meaningful name about the image (sky, tree, grass, etc.) 
+
+Now, the image is not entirely within the scene boundaries. Resize your sprite to fit into the the rectangle in the file **GameScene.sks**. Also change **zPosition = -(#numberof images in background folder)**. **zPosition** determines which layers go on top of each other, the lower the number, the more in the back the picture is.
+
+Now, go through all the textures that are in the folder of your chosen background, don't forget to set the zPosition that corresponds to the best output. For example, for background 2 is the order from back to front is *sky -> jungle_bg -> trees and bushes -> grasses -> grass&road ->  fireflies -> lianas -> tree_face*  
 
 <p float="center">
  <img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/texture.png" width="45% height="45%">
@@ -53,6 +59,7 @@ Write in the search bar "Sprite" and drag **Color Sprite** onto ths screen bouda
 </p>
 
 Also, you'll notice that the orientation of the Scene is not landscape like we want. Go ahead and select **Scene** node and change the parameters as shown above.
+
 The result looks just like 
 
 <img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/sceneResult.png">
@@ -78,7 +85,7 @@ This is a normal UIViewController (think of it like the code behind what you see
 Let's start by adding our player to the screen. All our character will start as static characters without animation, we will add this as a bonus later on. 
 Go to your **GameScene.swift** file and add the following:
 ```
-let hero = SKSpriteNode(imageNamed: "hero") //Create Sprite for hero 
+let hero = SKSpriteNode(imageNamed: "Hero") //Create Sprite for hero 
 override func didMove(to view: SKView) {
     backgroundColor = SKColor.white
     hero.position = CGPoint(x: frame.midX, y: frame.midY) //position in the middle of the screen
@@ -89,11 +96,13 @@ override func didMove(to view: SKView) {
 Now run the app, you should see this
 <img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/screen12.png">
 
+**Note**:To rotate your screen to landscape mode on the simulator, press the shortcut keys **command + ->** or go to **hardware -> Rotate left/ Right**
+
 ### Add the Alien Bugs
 
 Now, we want to add some enormous alien Bugs that our hero has to kill to defend herself. We want them to come from one end of the screen towards our hero. 
 
-First, let's ove the hero to the left side of the screen, so she can only be attacked from one side. To do this, replace this line in **GameScene.swift**
+First, let's move the hero to the left side of the screen, so she can only be attacked from one side. To do this, replace this line in **GameScene.swift**
 ```
 hero.position = CGPoint(x: frame.midX, y: frame.midY) //position in the middle of the screen
 ```
@@ -101,20 +110,23 @@ hero.position = CGPoint(x: frame.midX, y: frame.midY) //position in the middle o
 ```
 hero.position = CGPoint(x: frame.minX + hero.size.width, y: frame.midY) //position in the middle of the screen
 ```
-Now, those monsters. It won't be enough to just add them to the screen like we did for the hero, we also need to make them move from one side of the screen to the hero, and that movements in Swift language means adding an action.
+
+Now, those monsters. It won't be enough to just add them to the screen like we did for the hero, we also need to make them move from one side of the screen to the hero. Movements in Swift language means adding an action.
 Let's create a function that generates these bugs: 
+
 ```
 func addBug(){
     let bug = SKSpriteNode(imageNamed: "bug") // create a bug sprite 
     let startingY = frame.midY
     bug.position = CGPoint(x: size.width + bug.size.width/2, y:  startingY)
+    bug.setScale(3)
     bug.xScale = abs(bug.xScale) * -1 //To flip the bug vertically because the original images is pointing to the left 
     addChild(bug)
 }
 ```
 This should look familiar, since it is exactly what we did for the player. For now, all the monsters will start from the same point. While the x is set to slightly outside of the screen (*size.width + bug.size.width/2*) and y is the middle of the screen. This is still missing the movement. Add this bellow the previous code: 
 ```
-let duration = random(min: CGFloat(2.0), max: CGFloat(4.0))
+let duration = CGFloat(2.0)
 let moveAction = SKAction.move(to: CGPoint(x: -bug.size.width/2, y:  startingY), duration: TimeInterval(duration))
 let finishAction = SKAction.removeFromParent()
 bug.run(SKAction.sequence([moveAction, finishAction]))
@@ -123,11 +135,12 @@ So what are we doing here? To create the action, we're setting the duration to 2
 ```
 func addBug() {
     let bug = SKSpriteNode(imageNamed: "bug")
-    let startingY = random(min: -bug.size.height, max: size.height - bug.size.height)
+    let startingY = frame.midY
     bug.position = CGPoint(x: size.width + bug.size.width/2, y:  startingY)
     bug.setScale(3)
+    bug.xScale = abs(bug.xScale) * -1
     addChild(bug)
-    let duration =  random(min: CGFloat(2.0), max: CGFloat(4.0))
+    let duration = CGFloat(2.0)
     let moveAction = SKAction.move(to: CGPoint(x: frame.minX, y: frame.midY), duration: TimeInterval(duration))
     let finishAction = SKAction.removeFromParent()
     bug.run(SKAction.sequence([moveAction, finishAction]))
@@ -153,13 +166,13 @@ func addBug() {
     let bug = SKSpriteNode(imageNamed: "bug")
     let startingY = random(min: -size.height/2 - bug.size.height, max: size.height/2 + bug.size.height)
     bug.position = CGPoint(x: size.width + bug.size.width/2, y: startingY)
-    bug.setScale(3)
+    bug.xScale = abs(bug.xScale) * -1
     addChild(bug)
     let duration = random(min: CGFloat(2.0), max: CGFloat(4.0))
     let moveAction = SKAction.move(to: CGPoint(x: frame.minX, y: frame.midY), duration: TimeInterval(duration))
     let finishAction = SKAction.removeFromParent()
     bug.run(SKAction.sequence([moveAction, finishAction]))
-}
+ }
 ```
 
 The randomised generation of the bugs looks like this:
@@ -189,7 +202,7 @@ override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?){
 
 Next, we need to set up the original location of the projectile, you're probably used to this by now: create a sprite and set the location.
 ```
-let laserBall = SKSpriteNode(imageNamed: "laser")
+let laserBall = SKSpriteNode(imageNamed: "laserball1")
 laserBall.position = hero.position
 ```
 We need to check if the touch on the screen is valid. For instance, we don't want to our hero shoot behind herself. To do this, we need to calculate the offset of the location to the laserBall.
@@ -221,7 +234,7 @@ override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         return
     }
     let touchLocation = touch.location(in: self)
-    let laserBall = SKSpriteNode(imageNamed: "laser")
+    let laserBall = SKSpriteNode(imageNamed: "laserball1")
     laserBall.setScale(3)
     laserBall.position = hero.position
     if let destinationPoint = CGPoint.findlaserBallDestination(touchPoint: touchLocation, heroLocation: laserBall.position){
