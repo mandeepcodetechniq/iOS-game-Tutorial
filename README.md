@@ -82,7 +82,7 @@ Now, let's get started! Open your **GameViewController.swift** file, this is wha
 <img src="https://github.com/PhaelIshall/iOS-game-Tutorial/blob/master/images/screen9.png">
 
 This is a normal UIViewController (think of it like the code behind what you see on any given screen) with an SKView for a root view. This means that it contains a SpriteKit scene.
-Let's start by adding our player to the screen. All our character will start as static characters without animation, we will add this as a bonus later on. 
+Let's start by adding our player to the screen. All our characters will start as static images without animation. Later on, we will add animation as a bonus. 
 Go to your **GameScene.swift** file and add the following:
 ```
 let hero = SKSpriteNode(imageNamed: "Hero") //Create Sprite for hero 
@@ -131,7 +131,7 @@ let moveAction = SKAction.move(to: CGPoint(x: -bug.size.width/2, y:  startingY),
 let finishAction = SKAction.removeFromParent()
 bug.run(SKAction.sequence([moveAction, finishAction]))
  ```
-So what are we doing here? To create the action, we're setting the duration to 2 seconds and the source position this sprite spawns from. After the action is comeplete, we remove it from the scene. Then, we run the action sequence, move, then disappear, this is so we can remove it from the scene when it is no longer visible. If we don't do this, we could end up having dozens of bugs consuming the memory of your iPhone and you can't even see them. This is what the full code looks like: 
+So what are we doing here? To create the action, we're setting the duration to 2 seconds and the source position this sprite spawns from. After the action is complete, we remove it from the scene. Then, we run the action sequence, move, then disappear, this is so we can remove it from the scene when it is no longer visible. If we don't do this, we could end up having dozens of bugs consuming the memory of your iPhone and you can't even see them. This is what the full code looks like: 
 ```
 func addBug() {
     let bug = SKSpriteNode(imageNamed: "bug")
@@ -181,7 +181,7 @@ The randomised generation of the bugs looks like this:
 
 ### Shooting the bugs
 
-There are many ways we can implement shooting the bugs. The way I chose to to click on the bug to send an arrow from the hero towards it. 
+There are many ways we can implement shooting the bugs. The way I chose to click on the bug to send an a laser ball from the hero towards it. 
 
 We need to override a predefined function called **touchesEnded** in **GameScene.swift**, see below 
 ```
